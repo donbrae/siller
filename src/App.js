@@ -1,12 +1,14 @@
 import React, {useState, useEffect} from 'react';
 import Field from "./components/Field";
 import Button from "./components/Button";
+import Checkbox from "./components/Checkbox";
 import './App.css';
 
 function App() {
-    const [account, setAccount] = useState(0); // Money in account
-    const [perday, setPerday] = useState(0); // Days till payday
+    const [account, setAccount] = useState(''); // Money in account
+    const [perday, setPerday] = useState(''); // Days till payday
     const [calcul, setCalcul] = useState('x'); // Calcul
+    const [saveLocal, setSaveLocal] = useState({foo: 'bar', checkedOrNot: ''}); // Save values in local storage (don't need 'foo' here; just demoing state having multiple attributes)
     const blankPending = {};
     const [pending, setPending] = useState([blankPending, blankPending, blankPending]);
 
@@ -21,7 +23,7 @@ function App() {
         const id = `pending-${key}`;
 
         return (<div key={id}>
-            <Field name="Pending transaction £" id={id} dataId={key} handler={handlePending}/>
+            <Field name="Pending transaction" id={id} dataId={key} handler={handlePending}/>
         </div>);
     });
 
@@ -31,6 +33,14 @@ function App() {
                 ...blankPending
             }
         ]);
+    }
+
+    function handleCheckbox(e) {
+        if (e.target.type === 'checkbox' && !e.target.checked) {
+            setSaveLocal({...saveLocal, checkedOrNot: ''});
+        } else {
+            setSaveLocal({...saveLocal, checkedOrNot: e.target.value});
+        }
     }
 
     function goCalculate() {
@@ -56,15 +66,20 @@ function App() {
 
     useEffect(() => {
         goCalculate();
+
+        console.log('merp');
+
+        // > Store data locally
         return() => {}
     }); // Runs on init and every update
 
     return (<div>
-        <Field id="account" value={account} name="Bank account balance £" handler={(e) => setAccount(e.target.value)}/>
-        {pendingList}
+        <Field id="account" value={account} name="Bank account balance" handler={(e) => setAccount(e.target.value)}/> {pendingList}
         <Field id="perday" value={perday} name="Days left till payday" handler={(e) => setPerday(e.target.value)}/>
-        <Button id="addPending" name="Add pending transaction" handler={addPendingField}/>
-        <h2>Your daily budget is £{calcul}.</h2>
+        <Button id="addPending" class="btn btn-light mb-3" name="Add another pending transaction" handler={addPendingField}/>
+        <Checkbox id="saveLocally" value={saveLocal} name="Save data locally" handler={handleCheckbox}/>
+        <div className="form-text text-muted mb-3">Check this box to store data on your device so that it’s there the next time you visit siller.app. Data will never be uploaded to a server.</div>
+        <h2>Your daily budget is currently {calcul}.</h2>
     </div>);
 }
 

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="h-100">
   <head>
     <meta charset="utf-8" />
     <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
@@ -26,9 +26,14 @@
     -->
     <title>React App</title>
   </head>
-  <body>
+  <body class="d-flex flex-column h-100">
     <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="root"></div>
+    <main class="flex-shrink-0 mb-5">
+      <div class="container">
+        <h1 class="mt-5 mb-4">💰 Siller.app</h1>
+        <div id="root"></div>
+      </div>
+    </main>
     <!--
       This HTML file is a template.
       If you open it directly in the browser, you will see an empty page.
@@ -40,4 +45,10 @@
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
   </body>
+
+  <footer class="footer mt-auto py-3 bg-light">
+    <div class="container">
+      <span class="text-muted">Place sticky footer content here.</span>
+    </div>
+  </footer>
 </html>
