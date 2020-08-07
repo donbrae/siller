@@ -7,12 +7,18 @@ function App() {
     const [account, setAccount] = useState(0); // Money in account
     const [perday, setPerday] = useState(0); // Days till payday
     const [calcul, setCalcul] = useState('x'); // Calcul
-    const [pending, setPending] = useState([<Field name="Pending transaction £" prefix="pending-"/>]); // Pending transactions
+    const [pending, setPending] = useState([]); // Value of pending transactions
+    const [pendingfield, setPendingField] = useState([<Field name="Pending transaction £" prefix="pending-" func={(e) => setPending([...pending, e.target.value])}/>]); // Pending transaction fields
 
-    const pendingList = pending.map((item, key) => <div key={key}>{item}</div>);
+    const pending_list = pendingfield.map((item, key) => <div key={key}>{item}</div>);
 
     function goCalculate() {
 
+        // pending.map((item, key) => {
+        //     console.log(item, key);
+        // });
+
+        console.log(pending);
         if (parseFloat(account) && parseFloat(perday)) {
             setCalcul((parseFloat(account) / parseFloat(perday)).toFixed(2));
         } else {
@@ -21,19 +27,17 @@ function App() {
     }
 
     useEffect(() => {
-
         goCalculate();
-        return() => {
-            console.log('optional cleanup function');
-        }
+        return() => {}
     }); // Runs on init and every update
 
     return (<div>
-        <Field id="account" value={account} name="Bank account balance £" func={(e) => setAccount(e.target.value)}/> {pendingList}
+        <Field id="account" value={account} name="Bank account balance £" func={(e) => setAccount(e.target.value)}/>
+        {pending_list}
         <Field id="perday" value={perday} name="Days left till payday" func={(e) => setPerday(e.target.value)}/>
-        <Button id="add-pending" name="Add pending transaction" func={(e) => setPending([
-                ...pending,
-                <Field name="Pending transaction £" prefix="pending-"/>
+        <Button id="add-pending" name="Add pending transaction" func={(e) => setPendingField([
+                ...pendingfield,
+                <Field name="Pending transaction £" prefix="pending-" func={(e) => setPending([...pending, e.target.value])}/>
             ])}/>
         <h2>Your daily budget is £{calcul}.</h2>
     </div>);
