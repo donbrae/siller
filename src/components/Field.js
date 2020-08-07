@@ -1,11 +1,9 @@
 import React from 'react';
-import newId from '../utils/newid';
 
 function Field(props) {
-    let id = props.id ? props.id : newId(props.prefix);
     return (<>
-        <label htmlFor={id}>{props.name}</label>
-        <input type="text" id={id} value={props.value} onChange={props.func}></input>
+        <label htmlFor={props.id}>{props.name}</label>
+        <input type="text" className={props.class} id={props.id} data-id={props.dataId} value={props.value} onChange={props.handler}></input>
     </>);
 }
 
