@@ -8,8 +8,13 @@ function App() {
     const [account, setAccount] = useState(''); // Money in account
     const [perday, setPerday] = useState(''); // Days till payday
     const [calcul, setCalcul] = useState('x'); // Calcul
-    const [saveLocal, setSaveLocal] = useState({foo: 'bar', checkedOrNot: ''}); // Save values in local storage (don't need 'foo' here; just demoing state having multiple attributes)
-    const blankPending = {};
+    const [saveLocal, setSaveLocal] = useState({
+        id: 'saveLocally',
+        checkedOrNot: localStorage.getItem('saveLocal')
+            ? localStorage.getItem('saveLocal')
+            : ''
+    }); // Checkbox to save values in local storage
+    const blankPending = {}; // Could optionally have individual properties
     const [pending, setPending] = useState([blankPending, blankPending, blankPending]);
 
     const handlePending = e => {
@@ -35,49 +40,64 @@ function App() {
         ]);
     }
 
-    function handleCheckbox(e) {
+    function handleSaveLocalCheckbox(e) {
         if (e.target.type === 'checkbox' && !e.target.checked) {
-            setSaveLocal({...saveLocal, checkedOrNot: ''});
+            setSaveLocal({
+                ...saveLocal,
+                checkedOrNot: ''
+            }); // Update only the checkedOrNot property
+            localStorage.setItem('saveLocal', '');
         } else {
-            setSaveLocal({...saveLocal, checkedOrNot: e.target.value});
-        }
-    }
-
-    function goCalculate() {
-        let pendingSum = 0;
-        const pendingValues = pending.map((item, key) => {
-            return parseFloat(item);
-        });
-
-        pendingValues.forEach((item, i) => {
-            if (item)
-                pendingSum += item;
-            }
-        );
-
-        if (parseFloat(account) && parseFloat(perday) && pendingSum) {
-            setCalcul(((parseFloat(account) - pendingSum) / parseFloat(perday)).toFixed(2));
-        } else if (parseFloat(account) && parseFloat(perday)) {
-            setCalcul((parseFloat(account) / parseFloat(perday)).toFixed(2));
-        } else {
-            setCalcul('x');
+            setSaveLocal({
+                ...saveLocal,
+                checkedOrNot: e.target.value
+            });
+            localStorage.setItem('saveLocal', e.target.value);
         }
     }
 
     useEffect(() => {
+
+        function goCalculate() {
+            let pendingSum = 0;
+            const pendingValues = pending.map((item, key) => {
+                return parseFloat(item);
+            });
+
+            pendingValues.forEach((item, i) => {
+                if (item)
+                    pendingSum += item;
+                }
+            );
+
+            if (parseFloat(account) && parseFloat(perday) && pendingSum) {
+                setCalcul(((parseFloat(account) - pendingSum) / parseFloat(perday)).toFixed(2));
+            } else if (parseFloat(account) && parseFloat(perday)) {
+                setCalcul((parseFloat(account) / parseFloat(perday)).toFixed(2));
+            } else {
+                setCalcul('x');
+            }
+        }
+
+        // Update state based on localStorage
+        const isSaveLocalChecked = localStorage.getItem('saveLocal');
+
+        if (isSaveLocalChecked === 'on') {
+            document.getElementById(saveLocal.id).checked = true;
+        }
+
         goCalculate();
 
-        console.log('merp');
+        console.log('derp');
 
-        // > Store data locally
         return() => {}
-    }); // Runs on init and every update
+    }, [account, perday, pending]);
 
     return (<div>
         <Field id="account" value={account} name="Bank account balance" handler={(e) => setAccount(e.target.value)}/> {pendingList}
         <Field id="perday" value={perday} name="Days left till payday" handler={(e) => setPerday(e.target.value)}/>
         <Button id="addPending" class="btn btn-light mb-3" name="Add another pending transaction" handler={addPendingField}/>
-        <Checkbox id="saveLocally" value={saveLocal} name="Save data locally" handler={handleCheckbox}/>
+        <Checkbox id="saveLocally" value={saveLocal} name="Save data locally" handler={handleSaveLocalCheckbox}/>
         <div className="form-text text-muted mb-3">Check this box to store data on your device so that it’s there the next time you visit siller.app. Data will never be uploaded to a server.</div>
         <h2>Your daily budget is currently {calcul}.</h2>
     </div>);
