@@ -90,7 +90,7 @@ function App() {
     }, [account, perday, pending]);
 
     return (<div>
-        <Field id="account" value={account} class="form-control" name="Bank account balance" handler={(e) => setAccount(e.target.value)}/> {pendingList}
+        <Field id="account" value={account} class="form-control" name="Bank account balance" focus="autoFocus" handler={(e) => setAccount(e.target.value)}/> {pendingList}
         <Button id="addPending" class="btn btn-light mb-3 mt-2" name="Add another pending transaction" handler={addPendingField}/>
         <Field id="perday" value={perday} class="form-control" name="Days left till payday" handler={(e) => setPerday(e.target.value)}/>
         <Checkbox id="saveLocally" value={saveLocal} name="Save data locally" handler={handleSaveLocalCheckbox}/>
