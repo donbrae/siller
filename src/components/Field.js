@@ -5,7 +5,7 @@ function Field(props) {
     const afterCreate = useCallback(node => {
 
         // 'Pending' transation fields
-        if (node && props.class.includes('pending') && props.dataId > 2) { // > Can we dynamically get the value of pending.length instead of using '2'?
+        if (node && props.class.includes('pending') && props.dataId >= props.initialStatePending) { // > Can we dynamically get the value of pending.length instead of using '2'?
             node.focus();
         }
     }, []);

@@ -17,6 +17,9 @@ function App() {
     const blankPending = {}; // Could optionally have individual properties
     const [pending, setPending] = useState([blankPending, blankPending, blankPending]);
 
+    // Nae idea if this is an OK way to store initial state
+    const [initialStatePending] = useState(pending.length);
+
     const handlePending = e => {
         const updatedPending = [...pending];
         updatedPending[e.target.dataset.id] = e.target.value;
@@ -27,7 +30,7 @@ function App() {
 
         const id = `pending-${key}`;
 
-        return (<Field key={id} name="Pending transaction" id={id} dataId={key} class="pending form-control" handler={handlePending}/>);
+        return (<Field key={id} name="Pending transaction" id={id} dataId={key} initialStatePending={initialStatePending} class="pending form-control" handler={handlePending}/>);
     });
 
     function addPendingField() {
