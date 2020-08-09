@@ -27,9 +27,7 @@ function App() {
 
         const id = `pending-${key}`;
 
-        return (<div key={id}>
-            <Field name="Pending transaction" id={id} dataId={key} handler={handlePending}/>
-        </div>);
+        return (<Field key={id} name="Pending transaction" id={id} dataId={key} class="pending form-control" handler={handlePending}/>);
     });
 
     function addPendingField() {
@@ -88,15 +86,13 @@ function App() {
 
         goCalculate();
 
-        console.log('derp');
-
         return() => {}
     }, [account, perday, pending]);
 
     return (<div>
-        <Field id="account" value={account} name="Bank account balance" handler={(e) => setAccount(e.target.value)}/> {pendingList}
-        <Field id="perday" value={perday} name="Days left till payday" handler={(e) => setPerday(e.target.value)}/>
-        <Button id="addPending" class="btn btn-light mb-3" name="Add another pending transaction" handler={addPendingField}/>
+        <Field id="account" value={account} class="form-control" name="Bank account balance" handler={(e) => setAccount(e.target.value)}/> {pendingList}
+        <Button id="addPending" class="btn btn-light mb-3 mt-2" name="Add another pending transaction" handler={addPendingField}/>
+        <Field id="perday" value={perday} class="form-control" name="Days left till payday" handler={(e) => setPerday(e.target.value)}/>
         <Checkbox id="saveLocally" value={saveLocal} name="Save data locally" handler={handleSaveLocalCheckbox}/>
         <div className="form-text text-muted mb-3">Check this box to store data on your device so that it’s there the next time you visit siller.app. Data will never be uploaded to a server.</div>
         <h2>Your daily budget is currently {calcul}.</h2>
