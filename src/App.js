@@ -5,6 +5,38 @@ import Checkbox from "./components/Checkbox";
 import './App.css';
 
 function App() {
+
+  // Refactor
+  // const [inputs, setInputs] = useState([
+  //   {
+  //     title: 'Bank account balance',
+  //     type: 'text',
+  //     initialValue: ''
+  //   },
+  //   {
+  //     title: 'Pending transaction',
+  //     type: 'text',
+  //     initialValue: '',
+  //     initialCount: 3
+  //   },
+  //   {
+  //     title: 'Add another pending transaction',
+  //     type: 'button'
+  //   },
+  //   {
+  //     title: 'Days left till payday',
+  //     type: 'text',
+  //     initialValue: ''
+  //   },
+  //   {
+  //     title: 'Save data locally',
+  //     type: 'checkbox',
+  //     initialValue: localStorage.getItem('saveLocal') ?
+  //       localStorage.getItem('saveLocal') :
+  //       ''
+  //   }
+  // ]);
+
   const [account, setAccount] = useState(''); // Money in account
   const [perday, setPerday] = useState(''); // Days till payday
   const [calcul, setCalcul] = useState('x'); // Calcul
