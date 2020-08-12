@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import Field from "./components/Field";
 import Button from "./components/Button";
 import Checkbox from "./components/Checkbox";
@@ -32,13 +32,14 @@ function App() {
 
     return (
       <Field
+        item={item}
         key={id}
         name="Pending transaction"
         id={id}
         dataId={key}
         initialStatePending={initialStatePending}
         class="pending form-control"
-        handler={handlePending}/>
+        handler={handlePending} />
     );
   });
 
@@ -97,8 +98,8 @@ function App() {
 
     goCalculate();
 
-    return () => {}
-}, [account, perday, pending]);
+    return () => { }
+  }, [account, perday, pending]);
 
   return (<div>
     <Field
@@ -107,24 +108,24 @@ function App() {
       class="form-control"
       name="Bank account balance"
       focus="autoFocus"
-      handler={(e) => setAccount(e.target.value)}/>
+      handler={(e) => setAccount(e.target.value)} />
     {pendingList}
     <Button
       id="addPending"
       class="btn btn-light mb-3 mt-2"
       name="Add another pending transaction"
-      handler={addPendingField}/>
+      handler={addPendingField} />
     <Field
       id="perday"
       value={perday}
       class="form-control"
       name="Days left till payday"
-      handler={(e) => setPerday(e.target.value)}/>
+      handler={(e) => setPerday(e.target.value)} />
     <Checkbox
       id="saveLocally"
       value={saveLocal}
       name="Save data locally"
-      handler={handleSaveLocalCheckbox}/>
+      handler={handleSaveLocalCheckbox} />
     <div className="form-text text-muted mb-3">
       Check this box to store data on your device so that it’s there the next time you visit siller.app. Data will never be uploaded to a server.
     </div>
